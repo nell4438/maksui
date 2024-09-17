@@ -10,12 +10,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const responses = await Promise.all(requests);
-            // Handle the responses
+            const hitsOutput = document.getElementById('cardsContainer');
+            hitsOutput.innerHTML = '';
             responses.forEach(response => {
-                console.log(response.data);
+                if (response.data?.subscriptionStatus.toUpperCase() == 'ACTIVE') {
+                    hitsOutput.innerHTML += `
+                    <div class="card mx-auto">
+                        <div class="card-body text-center">
+                        ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
+                        </div>
+                    </div>
+                    `
+                }
+                // console.log(response.data);
             });
         } catch (error) {
-            // Handle any errors
             console.error(error);
         }
     });
