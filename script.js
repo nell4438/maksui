@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const hitsOutput = document.getElementById('cardsContainer');
             hitsOutput.innerHTML = '';
             responses.forEach(response => {
+                console.log(response.data,response.data?.subscriptionStatus.toUpperCase())
                 if (response.data?.subscriptionStatus.toUpperCase() == 'ACTIVE') {
                     hitsOutput.innerHTML += `
                     <div class="card mx-auto">
