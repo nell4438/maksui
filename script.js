@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let hitCount = 0;
             responses.forEach(response => {
                 // console.log(response.data, response.data?.subscriptionStatus.toUpperCase());
-                if (response.data?.subscriptionStatus.toUpperCase() === 'ACTIVE') {
+                if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE') {
                     hitCount++;
                     hitsOutput.innerHTML += `
                         <div class="card mx-auto">
