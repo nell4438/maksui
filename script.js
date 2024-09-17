@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkBtn.addEventListener('click', async function () {
         const comboList = document.getElementById('comboList').value;
         const credentials = comboList.split('\n');
-        const hitsOutput = document.getElementById('hitsOutput');
+        let hitsOutput = document.getElementById('hitsOutput');
         hitsOutput.innerHTML = '';
 
         try {
