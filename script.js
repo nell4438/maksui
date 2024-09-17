@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const responses = await Promise.all(requests);
-            const hitsOutput = document.getElementById('cardsContainer');
+            const hitsOutput = document.getElementById('hitsOutput');
             hitsOutput.innerHTML = '';
             responses.forEach(response => {
                 console.log(response.data,response.data?.subscriptionStatus.toUpperCase())
