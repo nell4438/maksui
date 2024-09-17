@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(response.data, response.data?.subscriptionStatus.toUpperCase());
                 if (response.data?.subscriptionStatus.toUpperCase() === 'ACTIVE') {
                     hitCount++;
-                    hitsOutput.innerHTML = `
+                    hitsOutput.innerHTML += `
                         <div class="card mx-auto">
                             <div class="card-body text-center">
                                 ${response.data.emeylpassword} - ${response.data.subscriptionStatus} - ${response.data.parentalControlPin}
