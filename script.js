@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     var checkBtn = document.getElementById("checkBtn");
+    var comboList = document.getElementById('comboList');
+    var bankNameElement = document.getElementById('bankName');
+
+    comboList.addEventListener('input', function () {
+        var credentials = comboList.value.split('\n');
+        var totalCredentials = credentials.length;
+        bankNameElement.textContent = `0/${totalCredentials}`;
+    });
+
     checkBtn.addEventListener('click', async function () {
         const comboList = document.getElementById('comboList');
         const credentials = comboList.value.split('\n');
@@ -7,11 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const bankName = document.getElementById('bankName');
         hitsOutput.innerHTML = '';
 
-        const batchSize = 500; //OLD -> 1000
+        const batchSize = 500;
         const totalBatches = Math.ceil(credentials.length / batchSize);
         let totalCredentials = credentials.length;
         let checkedCount = 0;
-
         try {
             let hitCount = 0;
             for (let i = 0; i < totalBatches; i++) {
