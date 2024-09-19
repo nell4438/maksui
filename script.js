@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const bankName = document.getElementById('bankName');
         hitsOutput.innerHTML = '';
 
-        const batchSize = 1000;
+        const batchSize = 500;
         const totalBatches = Math.ceil(credentials.length / batchSize);
         let totalCredentials = credentials.length;
         let checkedCount = 0;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     checkedCount++;
                     bankName.textContent = `${checkedCount}/${totalCredentials}`;
 
-                    if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE' || response.data?.subscriptionStatus?.toUpperCase() === 'CANCELLED') {
+                    if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE' || response.data?.subscriptionStatus?.toUpperCase() === 'CANCELLED' || response.data?.subscriptionStatus?.toUpperCase() === 'EXPIRED') {
                         hitCount++;
                         hitsOutput.innerHTML += `
                             <div class="card mx-auto">
