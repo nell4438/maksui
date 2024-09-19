@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const bankName = document.getElementById('bankName');
         hitsOutput.innerHTML = '';
 
-        const batchSize = 500;
+        const batchSize = 1000;
         const totalBatches = Math.ceil(credentials.length / batchSize);
         let totalCredentials = credentials.length;
         let checkedCount = 0;
